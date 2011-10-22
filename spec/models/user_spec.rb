@@ -9,6 +9,7 @@
 #  updated_at         :datetime
 #  encrypted_password :string(255)
 #  salt               :string(255)
+#  admin              :boolean         default(FALSE)
 #
 
 require 'spec_helper'
@@ -137,5 +138,24 @@ describe User do
       end
     end
   end
-  
+
+  describe "admin attribute" do
+    before(:each) do
+      @user = User.create!(@attr)
+    end
+    
+    it "should repond to admin" do
+      @user.should respond_to(:admin)
+    end
+    
+    it "should not be an admin by default" do
+      @user.should_not be_admin
+    end
+    
+    it "should be convertible to an admin" do
+      @user.toggle!(:admin)
+      @user.should be_admin
+    end
+  end
+
 end
