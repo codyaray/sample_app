@@ -4,6 +4,8 @@
 en:
   helpers:
     submit:
+      micropost:
+        create: "Submit"
       session:
         create: "Sign in"
       user:

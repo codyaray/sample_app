@@ -16,6 +16,8 @@ require 'digest'
 class User < ActiveRecord::Base
   attr_accessor :password
   attr_accessible :name, :email, :password, :password_confirmation
+  
+  has_many :microposts, :dependent => :destroy
 
   email_regex = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
 
@@ -38,6 +40,11 @@ class User < ActiveRecord::Base
   def self.authenticate(email, submitted_password)
     user = find_by_email(email)
     (user && user.has_password?(submitted_password)) ? user : nil
+  end
+
+  def feed
+    # Just show user's own posts for now
+    Micropost.where("user_id = ?", id)
   end
 
   private

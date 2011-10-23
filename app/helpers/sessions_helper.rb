@@ -26,6 +26,10 @@ module SessionsHelper
     user == current_user
   end
 
+  def authenticate
+    deny_access unless signed_in?
+  end
+
   def deny_access
     store_location
     redirect_to signin_path, :notice => "Please sign in to access this page."
@@ -39,9 +43,13 @@ module SessionsHelper
   private
 
     def user_from_session
-      User.find(session[:user_id]) if session[:user_id]
+      User.find(signin_token) unless signin_token.nil?
     end
-    
+
+    def signin_token
+      session[:user_id]
+    end
+
     def store_location
       session[:return_to] = request.fullpath
     end
