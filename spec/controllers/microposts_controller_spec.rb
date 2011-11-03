@@ -13,6 +13,38 @@ describe MicropostsController do
       delete :destroy, :id => 1
       response.should redirect_to(signin_path)
     end
+    
+    it "should allow access to 'index'" do
+      get :index, :user_id => Factory(:user)
+      response.should_not redirect_to(signin_path)
+    end
+  end
+
+  describe "GET 'index'" do
+    before(:each) do
+      @user = test_sign_in(Factory(:user))
+      @microposts = []
+      50.times do
+        @microposts << Factory(:micropost, :user => @user, :content => Faker::Lorem.sentence(5))
+      end
+    end
+    
+    it "should be successful" do
+      get :index, :user_id => @user
+      response.should be_successful
+    end
+
+    it "should have the right title" do
+      get :index, :user_id => @user
+      response.should have_selector("title", :content => "#{@user.name}'s microposts")
+    end
+
+    it "should have an element for each micropost" do
+      get :index, :user_id => @user
+      @microposts.each do |micropost|
+        response.should have_selector("span.content", :content => micropost.content)
+      end
+    end
   end
 
   describe "POST 'create'" do
@@ -32,7 +64,7 @@ describe MicropostsController do
       end
 
       it "should render the home page" do
-        post :create, :micropost => @attr
+        post :create, :micropost => @attr, :user_id => @user
         response.should render_template('pages/home')
       end
     end
