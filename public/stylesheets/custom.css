@@ -123,6 +123,12 @@ div.field, div.actions {
   margin-bottom: 10px;
 }
 
+/* Messages */
+
+.bad {
+  color: red;
+}
+
 /* Error Messages */
 
 .field_with_errors {
@@ -230,6 +236,8 @@ table.microposts tr td.micropost span.timestamp {
   color: #666;
 }
 
+/* User home page */
+
 div.user_info img {
   padding-right: 0.1em;
 }
@@ -253,4 +261,9 @@ form.new_micropost {
 form.new_micropost textarea {
   height: 4em;
   margin-bottom: 0;
+}
+
+form.new_micropost .counter {
+  float: right;
+  margin-right: 3em;
 }
